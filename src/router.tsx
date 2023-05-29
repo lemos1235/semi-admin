@@ -4,20 +4,19 @@ import { useRoutes, RouteObject } from "react-router-dom";
 import PageLoading from "@components/page-loading";
 
 function generatePathConfig(): Record<string, any> {
-  const modules = import.meta.glob("/src/pages/**/$*.{ts,tsx}");
-
+  const modules = import.meta.glob(["/src/pages/**/*.{ts,tsx}", "!/src/pages/**/components**", "!/src/pages/_public/**"]);
   const pathConfig = {};
   Object.keys(modules).forEach(filePath => {
     const routePath = filePath
       .replace("/src/pages/", "")
       .replace(/.tsx?/, "")
-      .replace(/\$\[([\w-]+)]/, ":$1")
-      .replace(/\$([\w-]+)/, "$1")
+      .replace(/\[([\w-]+)]/, ":$1")
+      .replace(/([\w-]+)/, "$1")
       .split("/");
     // 使用 lodash.set 合并为一个对象
-    set(pathConfig, routePath, modules[filePath]);
+    const filteredPath = routePath.filter(p => !p.startsWith(".") && !p.startsWith("_") || p.startsWith("_layout"))
+    set(pathConfig, filteredPath, modules[filePath]);
   });
-
   return pathConfig;
 }
 
@@ -53,12 +52,12 @@ function mapPathConfigToRoute(cfg: Record<string, any>): RouteObject[] {
       };
     }
     // 否则为目录，则查找下一层级
-    const { $, ...rest } = child;
+    const { _layout, ...rest } = child;
 
     return {
       path: routePath,
       // layout 处理
-      element: wrapSuspense($),
+      element: wrapSuspense(_layout),
       // 递归 children
       children: mapPathConfigToRoute(rest),
     };
@@ -66,11 +65,11 @@ function mapPathConfigToRoute(cfg: Record<string, any>): RouteObject[] {
 }
 
 function generateRouteConfig(): RouteObject[] {
-  const { $, ...pathConfig } = generatePathConfig();
+  const { _layout, ...pathConfig } = generatePathConfig();
   return [
     {
       path: "/",
-      element: wrapSuspense($),
+      element: wrapSuspense(_layout),
       children: mapPathConfigToRoute(pathConfig),
     },
   ];
@@ -81,11 +80,11 @@ const mainRoutes = generateRouteConfig();
 const publicRoutes: RouteObject[] = [
   {
     path: "login",
-    element: wrapSuspense(() => import("@pages/login")),
+    element: wrapSuspense(() => import("@src/pages/_public/login")),
   },
   {
     path: "*",
-    element: wrapSuspense(() => import("@pages/404")),
+    element: wrapSuspense(() => import("@src/pages/_public/404")),
   },
 ];
 
