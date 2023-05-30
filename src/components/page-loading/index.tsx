@@ -3,6 +3,12 @@ type Props = {
   description?: string;
 };
 
-export default function index({}: Props) {
-  return <></>;
+function PageLoading({}: Props) {
+  return <div>PageLoading</div>;
 }
+
+PageLoading.defaultProps = {
+  message: "正在加载中~",
+};
+
+export default PageLoading;

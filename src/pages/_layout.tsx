@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { Layout } from "@douyinfe/semi-ui";
-import Header from "@layout/header";
-import Sider from "@layout/sider";
-import Footer from "@layout/footer";
+import Header from "@components/layout/header";
+import Sider from "@components/layout/sider";
+import Footer from "@components/layout/footer";
 import { Outlet } from "react-router-dom";
 import PageLoading from "@components/page-loading";
 import { RequireAuth } from "@src/context/auth";
@@ -17,7 +17,7 @@ const Index: React.FC = () => {
         <Layout>
           <Header />
           <Content className="layout-content">
-            <Suspense fallback={<PageLoading message="正在加载中" />}>
+            <Suspense fallback={<PageLoading />}>
               <Outlet />
             </Suspense>
           </Content>

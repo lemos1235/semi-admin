@@ -4,7 +4,11 @@ import { useRoutes, RouteObject } from "react-router-dom";
 import PageLoading from "@components/page-loading";
 
 function generatePathConfig(): Record<string, any> {
-  const modules = import.meta.glob(["/src/pages/**/*.{ts,tsx}", "!/src/pages/**/components**", "!/src/pages/_public/**"]);
+  const modules = import.meta.glob([
+    "/src/pages/**/*.{ts,tsx}",
+    "!/src/pages/**/components**",
+    "!/src/pages/_common/**",
+  ]);
   const pathConfig = {};
   Object.keys(modules).forEach(filePath => {
     const routePath = filePath
@@ -14,7 +18,7 @@ function generatePathConfig(): Record<string, any> {
       .replace(/([\w-]+)/, "$1")
       .split("/");
     // 使用 lodash.set 合并为一个对象
-    const filteredPath = routePath.filter(p => !p.startsWith(".") && !p.startsWith("_") || p.startsWith("_layout"))
+    const filteredPath = routePath.filter(p => (!p.startsWith(".") && !p.startsWith("_")) || p.startsWith("_layout"));
     set(pathConfig, filteredPath, modules[filePath]);
   });
   return pathConfig;
@@ -80,11 +84,15 @@ const mainRoutes = generateRouteConfig();
 const publicRoutes: RouteObject[] = [
   {
     path: "login",
-    element: wrapSuspense(() => import("@src/pages/_public/login")),
+    element: wrapSuspense(() => import("@pages/_common/login")),
+  },
+  {
+    path: "/403",
+    element: wrapSuspense(() => import("@pages/_common/403")),
   },
   {
     path: "*",
-    element: wrapSuspense(() => import("@src/pages/_public/404")),
+    element: wrapSuspense(() => import("@pages/_common/404")),
   },
 ];
 
@@ -92,8 +100,6 @@ const PageRoutes: FC = () => {
   return useRoutes([...mainRoutes, ...publicRoutes]);
 };
 
-export {
-  mainRoutes
-};
+export { mainRoutes };
 
 export default PageRoutes;

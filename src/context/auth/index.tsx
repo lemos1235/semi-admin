@@ -16,8 +16,8 @@ const fakeAuthProvider = {
 };
 
 interface UserInfo {
-  id: number,
-  nickname: string,
+  id: number;
+  nickname: string;
 }
 
 interface AuthContextType {
@@ -61,7 +61,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-
 function useAuth() {
   return React.useContext(AuthContext);
 }
@@ -99,11 +98,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   return children;
 }
 
-export {
-  AuthProvider,
-  RequireAuth,
-};
+export { AuthProvider, RequireAuth };
 function useMount(arg0: () => void) {
   throw new Error("Function not implemented.");
 }
-

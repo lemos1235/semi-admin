@@ -1,6 +1,6 @@
 import axios from "axios";
-import qs from "querystring";
 import localforage from "localforage";
+import qs from "querystring";
 import { useNavigate } from "react-router-dom";
 
 export function createInstance() {
@@ -45,10 +45,8 @@ instance.interceptors.response.use(
     } else {
       const navigate = useNavigate();
       if (error.response.status === 401) {
-        //401
-        navigate("/401");
+        navigate("/login");
       } else if (error.response.status == 403) {
-        //403
         navigate("/403");
       }
       return Promise.reject(error);
