@@ -3,24 +3,6 @@ import { ComponentType, FC, Suspense, lazy } from "react";
 import { useRoutes, RouteObject } from "react-router-dom";
 import PageLoading from "@components/page-loading";
 
-function generatePathConfig(): Record<string, any> {
-  const excludeFolders = ["!/src/pages/**/components**", "!/src/pages/error/**", "!/src/pages/login/**"];
-  const modules = import.meta.glob(["/src/pages/**/*.{ts,tsx}", ...excludeFolders]);
-  const pathConfig = {};
-  Object.keys(modules).forEach(filePath => {
-    const routePath = filePath
-      .replace("/src/pages/", "")
-      .replace(/.tsx?/, "")
-      .replace(/\[([\w-]+)]/, ":$1")
-      .replace(/([\w-]+)/, "$1")
-      .split("/");
-    // 使用 lodash.set 合并为一个对象
-    const filteredPath = routePath.filter(p => (!p.startsWith(".") && !p.startsWith("_")) || p.startsWith("_layout"));
-    set(pathConfig, filteredPath, modules[filePath]);
-  });
-  return pathConfig;
-}
-
 function wrapSuspense(importer: () => Promise<{ default: ComponentType }>) {
   if (!importer) {
     return undefined;
@@ -35,12 +17,33 @@ function wrapSuspense(importer: () => Promise<{ default: ComponentType }>) {
   );
 }
 
-/**
- * 将文件路径配置映射为 react-router 路由
- */
-function mapPathConfigToRoute(cfg: Record<string, any>): RouteObject[] {
+//遍历文件目录获取文件路径对象
+function generateRoutePaths(): Record<string, any> {
+  const modules = import.meta.glob([
+    "/src/pages/**/*.{ts,tsx}",
+    "!/src/pages/**/components**",
+    "!/src/pages/error/**",
+    "!/src/pages/login/**",
+  ]);
+  const routePaths = {};
+  Object.keys(modules).forEach(filePath => {
+    const routePath = filePath
+      .replace("/src/pages/", "")
+      .replace(/.tsx?/, "")
+      .replace(/\[([\w-]+)]/, ":$1")
+      .replace(/([\w-]+)/, "$1")
+      .split("/");
+    // 使用 lodash.set 合并为一个对象
+    const filteredPath = routePath.filter(p => /^(_layout|[^._])/.test(p));
+    set(routePaths, filteredPath, modules[filePath]);
+  });
+  return routePaths;
+}
+
+//将文件路径对象映射为React路由
+function mapPathsToRoute(paths: Record<string, any>): RouteObject[] {
   // route 的子节点为数组
-  return Object.entries(cfg).map(([routePath, child]) => {
+  return Object.entries(paths).map(([routePath, child]) => {
     // () => import() 语法判断
     if (typeof child === "function") {
       // 等于 index 则映射为当前根路由
@@ -60,24 +63,27 @@ function mapPathConfigToRoute(cfg: Record<string, any>): RouteObject[] {
       // layout 处理
       element: wrapSuspense(_layout),
       // 递归 children
-      children: mapPathConfigToRoute(rest),
+      children: mapPathsToRoute(rest),
     };
   });
 }
 
-function generateRouteConfig(): RouteObject[] {
-  const { _layout, ...pathConfig } = generatePathConfig();
+function generateMainRoutes(): RouteObject[] {
+  const routePaths = generateRoutePaths();
+  const mainLayout = () => import("@src/layout");
   return [
     {
       path: "/",
-      element: wrapSuspense(_layout),
-      children: mapPathConfigToRoute(pathConfig),
+      element: wrapSuspense(mainLayout),
+      children: mapPathsToRoute(routePaths),
     },
   ];
 }
 
-const mainRoutes = generateRouteConfig();
+//生成主路由
+export const mainRoutes = generateMainRoutes();
 
+//声明公共路由
 const publicRoutes: RouteObject[] = [
   {
     path: "login",
@@ -96,7 +102,5 @@ const publicRoutes: RouteObject[] = [
 const PageRoutes: FC = () => {
   return useRoutes([...mainRoutes, ...publicRoutes]);
 };
-
-export { mainRoutes };
 
 export default PageRoutes;

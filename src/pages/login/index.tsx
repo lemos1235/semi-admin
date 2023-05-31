@@ -1,7 +1,7 @@
 import { Form, Button, Card } from "@douyinfe/semi-ui";
 import { useState } from "react";
 import { login } from "@src/api/auth";
-import { Toast } from '@douyinfe/semi-ui';
+import { Toast } from "@douyinfe/semi-ui";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@src/context/auth";
 
@@ -15,8 +15,8 @@ export default function LoginPage() {
     const { code, msg, data } = await login(values);
     if (code === 200) {
       auth.signin(data);
-      Toast.success("登录成功！")
-      navigate("/")
+      Toast.success("登录成功！");
+      navigate("/");
     } else {
       Toast.error(msg);
     }

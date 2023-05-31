@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
 interface AuthContextType {
-  token: any,
+  token: any;
   signin: (token: any) => void;
   signout: () => void;
 }

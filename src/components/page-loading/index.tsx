@@ -3,8 +3,8 @@ type Props = {
   description?: string;
 };
 
-function PageLoading({}: Props) {
-  return <div>PageLoading</div>;
+function PageLoading({ message }: Props) {
+  return <div className="flex justify-center">{message}</div>;
 }
 
 PageLoading.defaultProps = {
