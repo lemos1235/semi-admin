@@ -7,7 +7,6 @@ function generatePathConfig(): Record<string, any> {
   const modules = import.meta.glob([
     "/src/pages/**/*.{ts,tsx}",
     "!/src/pages/**/components**",
-    "!/src/pages/_common/**",
   ]);
   const pathConfig = {};
   Object.keys(modules).forEach(filePath => {
@@ -84,15 +83,15 @@ const mainRoutes = generateRouteConfig();
 const publicRoutes: RouteObject[] = [
   {
     path: "login",
-    element: wrapSuspense(() => import("@pages/_common/login")),
+    element: wrapSuspense(() => import("@src/common/login")),
   },
   {
     path: "/403",
-    element: wrapSuspense(() => import("@pages/_common/403")),
+    element: wrapSuspense(() => import("@src/common/403")),
   },
   {
     path: "*",
-    element: wrapSuspense(() => import("@pages/_common/404")),
+    element: wrapSuspense(() => import("@src/common/404")),
   },
 ];
 
