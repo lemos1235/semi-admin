@@ -4,7 +4,8 @@ import { useRoutes, RouteObject } from "react-router-dom";
 import PageLoading from "@components/page-loading";
 
 function generatePathConfig(): Record<string, any> {
-  const modules = import.meta.glob(["/src/pages/**/*.{ts,tsx}", "!/src/pages/**/components**"]);
+  const excludeFolders = ["!/src/pages/**/components**", "!/src/pages/error/**", "!/src/pages/login/**"];
+  const modules = import.meta.glob(["/src/pages/**/*.{ts,tsx}", ...excludeFolders]);
   const pathConfig = {};
   Object.keys(modules).forEach(filePath => {
     const routePath = filePath
@@ -80,15 +81,15 @@ const mainRoutes = generateRouteConfig();
 const publicRoutes: RouteObject[] = [
   {
     path: "login",
-    element: wrapSuspense(() => import("@src/common/login")),
+    element: wrapSuspense(() => import("@pages/login")),
   },
   {
     path: "/403",
-    element: wrapSuspense(() => import("@src/common/403")),
+    element: wrapSuspense(() => import("@pages/error/403")),
   },
   {
     path: "*",
-    element: wrapSuspense(() => import("@src/common/404")),
+    element: wrapSuspense(() => import("@pages/error/404")),
   },
 ];
 

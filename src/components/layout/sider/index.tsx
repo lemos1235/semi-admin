@@ -1,8 +1,8 @@
-import { IconActivity, IconSemiLogo, IconSetting, IconUser } from "@douyinfe/semi-icons";
 import { Layout, Nav } from "@douyinfe/semi-ui";
-import { NavItems, OnSelectedData } from "@douyinfe/semi-ui/lib/es/navigation";
+import { OnSelectedData } from "@douyinfe/semi-ui/lib/es/navigation";
 import { mainRoutes } from "@src/router";
-import { useMemo, useState } from "react";
+import { useMenusStore } from "@src/store/common";
+import { useState } from "react";
 import { Link, RouteObject } from "react-router-dom";
 
 const { Sider } = Layout;
@@ -33,34 +33,13 @@ export default function SideBar() {
 
   const flattedRoutes = flatRoutes(mainRoutes);
 
-  const menuList: NavItems = useMemo(
-    () => [
-      {
-        itemKey: "/dashboard",
-        text: "Dashboard",
-        icon: <IconActivity />,
-      },
-      {
-        itemKey: "/user",
-        text: "用户管理",
-        icon: <IconUser />,
-      },
-      {
-        itemKey: "/setting",
-        text: "系统设置",
-        icon: <IconSetting />,
-      },
-    ],
-    []
-  );
+  const menus = useMenusStore();
 
   return (
     <Sider>
       <Nav
-        header={{
-          logo: <IconSemiLogo style={{ height: "36px", fontSize: 36 }} />,
-          text: "Semi 运营后台",
-        }}
+        header={menus.header}
+        items={menus.menuList}
         renderWrapper={({ itemElement, props }) => {
           if (props.itemKey) {
             const route = flattedRoutes[props.itemKey];
@@ -73,7 +52,6 @@ export default function SideBar() {
             }
           }
         }}
-        items={menuList}
         style={{ height: "100%" }}
         bodyStyle={{ height: "100%" }}
         // defaultOpenKeys={[""]}
