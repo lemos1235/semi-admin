@@ -4,10 +4,7 @@ import { useRoutes, RouteObject } from "react-router-dom";
 import PageLoading from "@components/page-loading";
 
 function generatePathConfig(): Record<string, any> {
-  const modules = import.meta.glob([
-    "/src/pages/**/*.{ts,tsx}",
-    "!/src/pages/**/components**",
-  ]);
+  const modules = import.meta.glob(["/src/pages/**/*.{ts,tsx}", "!/src/pages/**/components**"]);
   const pathConfig = {};
   Object.keys(modules).forEach(filePath => {
     const routePath = filePath

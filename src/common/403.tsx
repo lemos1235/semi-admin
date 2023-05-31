@@ -10,7 +10,11 @@ export default function Forbidden() {
       darkModeImage={<IllustrationNoAccessDark style={{ width: 150, height: 150 }} />}
       title="访问禁止"
       description="权限不足！"
-      style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <Button
         style={{ padding: "6px 24px", width: " 180px" }}

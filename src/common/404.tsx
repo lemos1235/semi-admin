@@ -10,7 +10,11 @@ export default function NotFound() {
       darkModeImage={<IllustrationNotFoundDark style={{ width: 150, height: 150 }} />}
       title="找不到咯"
       description="这里什么也没有~"
-      style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <Button
         style={{ padding: "6px 24px", width: " 180px" }}

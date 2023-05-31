@@ -1,6 +1,4 @@
 html,
-body,
-#root,
-#root > * {
+body {
   height: 100%;
 }

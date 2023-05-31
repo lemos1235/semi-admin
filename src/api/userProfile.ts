@@ -1,5 +1,5 @@
 import http from "@utils/http";
 
 export async function getProfile() {
-  await http.get("/userProfile/profile");
+  await http.get("/v3/userProfile/profile");
 }
