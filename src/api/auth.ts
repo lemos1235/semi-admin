@@ -1,5 +1,4 @@
 import http from "@utils/http";
-import { R } from ".";
 
 export interface LoginReponse {
   username: string;
