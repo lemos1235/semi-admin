@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export function createInstance() {
   return axios.create({
-    baseURL: process.env.VUE_APP_API_ENDPOINT || "/",
+    baseURL: process.env.VITE_BASE_API || "/",
     paramsSerializer: function (params) {
       return qs.stringify(params);
     },
