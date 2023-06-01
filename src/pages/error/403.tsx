@@ -2,7 +2,7 @@ import { IllustrationNoAccess, IllustrationNoAccessDark } from "@douyinfe/semi-i
 import { Button, Empty } from "@douyinfe/semi-ui";
 import { useNavigate } from "react-router-dom";
 
-export default function Forbidden() {
+export default function forbidden() {
   const navigate = useNavigate();
   return (
     <Empty

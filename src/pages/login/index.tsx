@@ -5,7 +5,7 @@ import { Toast } from "@douyinfe/semi-ui";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@src/context/auth";
 
-export default function LoginPage() {
+export default function loginPage() {
   const [loading, setLoading] = useState(false);
   const auth = useAuth();
   const navigate = useNavigate();

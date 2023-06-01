@@ -30,4 +30,3 @@ export const useMenusStore = create<Menus>(_ => ({
     },
   ],
 }));
-

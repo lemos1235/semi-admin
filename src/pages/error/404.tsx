@@ -2,7 +2,7 @@ import { IllustrationNotFound, IllustrationNotFoundDark } from "@douyinfe/semi-i
 import { Button, Empty } from "@douyinfe/semi-ui";
 import { useNavigate } from "react-router-dom";
 
-export default function NotFound() {
+export default function notFound() {
   const navigate = useNavigate();
   return (
     <Empty
