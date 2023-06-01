@@ -7,7 +7,7 @@ interface Menus {
   menuList: NavItems;
 }
 
-const useStore = create<Menus>(_ => ({
+export const useMenusStore = create<Menus>(_ => ({
   header: {
     logo: <IconSemiLogo style={{ height: "36px", fontSize: 36 }} />,
     text: "Semi 运营后台",
@@ -31,4 +31,3 @@ const useStore = create<Menus>(_ => ({
   ],
 }));
 
-export default useStore;

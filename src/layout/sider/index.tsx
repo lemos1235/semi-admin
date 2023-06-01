@@ -1,7 +1,7 @@
 import { Layout, Nav } from "@douyinfe/semi-ui";
 import { OnSelectedData } from "@douyinfe/semi-ui/lib/es/navigation";
 import { mainRoutes } from "@src/router";
-import { useMenusStore } from "@src/store/common";
+import { useMenusStore } from "@src/store/common/menus";
 import { useState } from "react";
 import { Link, RouteObject } from "react-router-dom";
 

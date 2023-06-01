@@ -1,3 +1,4 @@
+import { useTokenStore } from "@src/store/common/token";
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
@@ -10,17 +11,17 @@ interface AuthContextType {
 let AuthContext = React.createContext<AuthContextType>(null!);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = React.useState<any>(null);
+  const tokenStore = useTokenStore();
 
   const signin = (newToken: any) => {
-    setToken(newToken);
+    tokenStore.setToken(newToken);
   };
 
   const signout = () => {
-    setToken(null);
+    tokenStore.setToken(null);
   };
 
-  const value = { token, signin, signout };
+  const value = { token: tokenStore.token, signin, signout };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
